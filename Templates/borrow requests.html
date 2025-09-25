@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Borrow Requests</h2>
+<table>
+  <tr><th>User</th><th>Book</th><th>Status</th><th>Loan Date</th><th>Due Date</th><th>Action</th></tr>
+  {% for loan in requests %}
+  <tr>
+    <td>{{ loan.user.username }}</td>
+    <td>{{ loan.book.title }}</td>
+    <td>{{ loan.status }}</td>
+    <td>{{ loan.loan_date.date() }}</td>
+    <td>{{ loan.due_date.date() }}</td>
+    <td>
+      {% if loan.status == "Pending" %}
+        <a href="{{ url_for('approve_request', loan_id=loan.id) }}">Approve</a>
+      {% elif loan.status == "Approved" %}
+        <a href="{{ url_for('return_book', loan_id=loan.id) }}">Mark Returned</a>
+      {% else %}
+        Returned (Fee: ${{ loan.late_fee }})
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

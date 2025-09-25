@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Welcome, {{ user.username }}!</h2>
+
+<h3>Books</h3>
+<table>
+  <tr><th>Title</th><th>Author</th><th>Category</th><th>Status</th><th>Action</th></tr>
+  {% for book in books %}
+  <tr>
+    <td>{{ book.title }}</td>
+    <td>{{ book.author }}</td>
+    <td>{{ book.category }}</td>
+    <td>{{ "Available" if book.available else "Borrowed" }}</td>
+    <td>
+      {% if book.available and user.role == "User" %}
+        <a href="{{ url_for('borrow_book', book_id=book.id) }}">Borrow</a>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% if user.role == "User" %}
+<h3>Your Loans</h3>
+<ul>
+  {% for loan in loans %}
+  <li>{{ loan.book.title }} - Status: {{ loan.status }} - Due: {{ loan.due_date.date() }} - Fee: ${{ loan.late_fee }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

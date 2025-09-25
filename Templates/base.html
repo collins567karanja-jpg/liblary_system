@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library Management</title>
+    <!-- Link to CSS in static folder -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Library Management System</h1>
+        <hr>
+    </header>
+
+    <!-- Main content block (child templates can fill in) -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

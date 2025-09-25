@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Home page: list of books -->
+<h2>Available Books</h2>
+<ul>
+    {% for book in books %}
+        <li>
+            <strong>{{ book.title }}</strong> by {{ book.author }}
+            (Copies: {{ book.available_copies }})
+        </li>
+    {% else %}
+        <li>No books available</li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
