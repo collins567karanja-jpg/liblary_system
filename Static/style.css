@@ -9,10 +9,19 @@ header h1 {
     margin-bottom: 6px;
 }
 
+nav {
+    background: #333;
+    padding: 10px;
+}
+
 nav a {
     margin-right: 6px;
     text-decoration: none;
     color: #333;
+}
+
+nav a:hover {
+    text-decoration: underline;
 }
 
 .flashes {

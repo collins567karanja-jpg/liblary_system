@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Search Books</h2>
+<form method="POST" action="{{ url_for('search_books') }}">
+    <input type="text" name="query" placeholder="Search by title, author, or category">
+    <button type="submit">Search</button>
+</form>
+
+{% if books %}
+    <h3>Results:</h3>
+    <ul>
+    {% for book in books %}
+        <li>{{ book.title }} by {{ book.author }} ({{ book.category }})
+            {% if book.available %}
+                - Available
+            {% else %}
+                - Not Available
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

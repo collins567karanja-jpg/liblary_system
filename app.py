@@ -35,6 +35,19 @@ def dashboard():
     loans = Loan.query.filter_by(user_id=current_user.id).all() if current_user.role == "User" else []
     return render_template("dashboard.html", books=books, loans=loans, user=current_user)
 
+@app.route('/search', methods=['GET', 'POST'])
+def search_books():
+    books = []
+    if request.method == 'POST':
+        query = request.form.get('query')
+        books = Book.query.filter(
+            (Book.title.like(f"%{query}%")) |
+            (Book.author.like(f"%{query}%")) |
+            (Book.category.like(f"%{query}%"))
+        ).all()
+    return render_template('search.html', books=books)
+
+
 # ---------------------------
 # Borrow a Book (User)
 # ---------------------------
@@ -123,18 +136,19 @@ def return_book(loan_id):
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        username = request.form["username"]
+
         email = request.form["email"]
         password = request.form["password"]
 
-        hashed_password = generate_password_hash(password, method="sha256")
-        new_user = User(username=username, email=email, password=hashed_password, role="User")
+        hashed_password = generate_password_hash(password, method="pbkdf2:sha256", salt_length=8)
+        new_user = User( email=email, password=hashed_password, role="User"  )
 
         db.session.add(new_user)
         db.session.commit()
         flash("Registration successful! Please login.", "success")
         return redirect(url_for("login"))
     return render_template("register.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -149,6 +163,13 @@ def login():
         else:
             flash("Invalid credentials!", "danger")
     return render_template("login.html")
+
+# --- NEW ROUTE (Homepage/Dashboard) ---
+@app.route('/')
+def index():
+    # later you can render a template, but for now:
+    return "Welcome to the Library Management System!"
+
 
 @app.route("/logout")
 @login_required

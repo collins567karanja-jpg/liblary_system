@@ -1,33 +1,13 @@
 {% extends "base.html" %}
-
 {% block content %}
 <h2>Register</h2>
+<form method="POST" action="{{ url_for('register') }}">
+    <label>Username:</label><br>
+    <input type="text" name="email" required><br><br>
 
-<!-- Registration form POSTs to /register -->
-<form method="post" action="{{ url_for('register') }}">
-    <!-- Name field -->
-    <label for="name">Full name</label><br>
-    <input type="text" id="name" name="name" value="{{ name|default('') }}" required><br><br>
+    <label>Password:</label><br>
+    <input type="password" name="password" required><br><br>
 
-    <!-- Email field -->
-    <label for="email">Email</label><br>
-    <input type="email" id="email" name="email" value="{{ email|default('') }}" required><br><br>
-
-    <!-- Password field -->
-    <label for="password">Password</label><br>
-    <input type="password" id="password" name="password" required><br><br>
-
-    <!-- Only a logged-in admin can create users with specific roles.
-         This select is shown when current_user is admin; otherwise it's hidden.
-         When registering as a public user, the role will default to 'user'. -->
-    {% if current_user.is_authenticated and current_user.role == 'admin' %}
-        <label for="role">Role</label><br>
-        <select id="role" name="role">
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-        </select><br><br>
-    {% endif %}
-
-    <button type="submit">Create account</button>
+    <button type="submit">Register</button>
 </form>
 {% endblock %}
